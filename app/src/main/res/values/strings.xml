@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Tornado App</string>
+    <string name="email">Enter your email</string>
+    <string name="password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_in">don\'t have an account?register</string>
+    <string name="confirm_password">confirm your password</string>
+    <string name="signed">Sign in</string>
+    <string name="already_have_an_account_login">already have an account?loging</string>
+    <string-array name="program_options">
+        <item>Normal</item>
+        <item>Quick</item>
+    </string-array>
+
+    <string-array name="temp_options">
+        <item>Cold</item>
+        <item>Hot</item>
+    </string-array>
+
+    <string name="selected_item">Selected item:</string>
+
+
+</resources>

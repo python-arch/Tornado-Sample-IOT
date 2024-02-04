@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848836176113",
+    "project_id": "tornado-ip-access",
+    "storage_bucket": "tornado-ip-access.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848836176113:android:31af33eb3990923f14e150",
+        "android_client_info": {
+          "package_name": "com.example.tornado_ip_access"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl8kl4oAYgw6jNRUEhE3-3QiBADE1vN-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
