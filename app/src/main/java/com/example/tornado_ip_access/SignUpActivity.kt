@@ -57,6 +57,13 @@ class SignUpActivity : AppCompatActivity() {
             startActivity(Intent(this , LoginActivity::class.java))
         }
         checkLocationPermission()
+
+        var test_button = findViewById<Button>(R.id.test)
+
+        test_button.setOnClickListener {
+//            throw RuntimeException("Test Crash") // Force a crash
+            startActivity(Intent(this , AzureConnectionTest::class.java))
+        }
     }
 
     override fun onRequestPermissionsResult(

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    // Add the Crashlytics Gradle plugin
 }
 
 android {
@@ -50,4 +51,17 @@ dependencies {
 
     implementation 'com.sun.mail:android-mail:1.6.5'
     implementation 'com.sun.mail:android-activation:1.6.5'
+
+
+    implementation ('com.microsoft.azure.sdk.iot:iot-device-client:2.1.2') {
+        exclude module: 'slf4j-api'
+        exclude module: 'log4j-slf4j-impl'
+    }
+    implementation ('org.apache.commons:commons-lang3:3.6')
+    implementation ('javax.xml.stream:stax-api:1.0-2')
+    implementation 'org.slf4j:slf4j-android:1.7.29'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
 }

@@ -11,6 +11,7 @@ class PanelActivity : AppCompatActivity() {
     lateinit var  program_spinner : Spinner
     lateinit var temp_spinner : Spinner
     lateinit var save_button : Button
+    lateinit var display_button : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,7 @@ class PanelActivity : AppCompatActivity() {
 
         program_spinner = findViewById(R.id.program_cycle_spinner)
         temp_spinner  = findViewById(R.id.temp_spinner)
+        display_button = findViewById(R.id.display)
 
         var programs  = resources.getStringArray(R.array.program_options)
         var adapter = ArrayAdapter(this , android.R.layout.simple_spinner_item ,  programs)
@@ -57,6 +59,11 @@ class PanelActivity : AppCompatActivity() {
         save_button = findViewById(R.id.save_settings)
         save_button.setOnClickListener {
             startActivity(Intent(this , Dashboard_Activity::class.java))
+        }
+
+//        start activity for navigating to the Azure connection test activity
+        display_button.setOnClickListener {
+            startActivity(Intent(this , AzureConnectionTest::class.java))
         }
     }
 }
