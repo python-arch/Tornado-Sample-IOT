@@ -16,10 +16,8 @@ The Demo was built using the discussed architecture, using Kotlin for native And
 
 ### Architecture Diagram
 
-![Architecture Diagram](app_arch.png)
+![Architecture Diagram](arch.png)
 
 ## Summary
 
 In summary, we successfully implemented an end-to-end reliable solution. This involved simulating the entire process, starting from transmitting telemetry data from the device to the cloud. We then streamed this data to a software service (mobile application). On the other end, we enabled the mobile application to send messages back to the device through an architecture that was easy to use, reliable, and remarkably simple.
-
-- [Github link for further info](https://github.com/python-arch)
