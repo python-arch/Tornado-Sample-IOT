@@ -17,11 +17,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/text_device"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
-            android:text="Please Proceed to select the network!"
+            android:text="Successfully Paired with "
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
             android:layout_margin="15dp"
             android:layout_marginTop="60dp"
             android:background="@drawable/btn_primary"
-            android:text="Proceed"
+            android:text="Proceed to network mode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toStartOf="parent"

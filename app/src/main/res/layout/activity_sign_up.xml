@@ -24,46 +24,60 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Tornado!"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="@drawable/btn_primary"
-        android:text="Register"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Welcome to Tornado IOT test app!"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
-
-    <Button
-        android:id="@+id/Sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="@drawable/btn_primary"
-        android:text="@string/signed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register" />
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
-    <Button
-        android:id="@+id/test"
-        android:padding="10dp"
-        android:background="@drawable/btn_primary"
+    <TextView
+        android:id="@+id/titleTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Azure Direct Demo"
+        android:layout_marginTop="128dp"
+        android:text="Press the connect button to start"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
+
+    <Button
+        android:id="@+id/network_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_primary"
+        android:padding="10dp"
+        android:text="Network Mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Sign_in" />
+        app:layout_constraintTop_toBottomOf="@+id/test" />
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="240dp"
+        android:background="@drawable/btn_primary"
+        android:padding="10dp"
+        android:text="Station mode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView2" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pineLogo"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/chart"
+        app:lottie_repeatMode="reverse" />
 </androidx.constraintlayout.widget.ConstraintLayout>

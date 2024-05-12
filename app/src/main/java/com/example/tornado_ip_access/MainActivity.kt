@@ -94,6 +94,30 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val test_button:Button = findViewById(R.id.test_connect)
+
+        test_button.setOnClickListener {
+            // Send POST request
+            val postData = mapOf("ssid" to "omarsamehsyam", "password" to "omar1996")
+            APiClientWifi.sendRequest("POST", "config", postData) { responseBody, exception ->
+                if (exception != null) {
+                    // Display the response or handle it as needed
+                    println(exception.toString())
+                    return@sendRequest
+                }
+
+                // Process the response body
+                if (responseBody != null) {
+                    // Display the response or handle it as needed
+                    println(responseBody)
+                    val intent = Intent(this, Transition_page_select::class.java)
+                    intent.putExtra("responseBody", responseBody)
+                    startActivity(intent)
+                }
+            }
+        }
+
+
 
     }
 
@@ -128,16 +152,18 @@ class MainActivity : AppCompatActivity() {
                         .show()
 
 
-                    // check if he is connected to valid SSID
-                    if (connectedWifiName.startsWith("A")) {
-                        // User is connected to a Wi-Fi network with the specified SSID prefix
-                        // Show a button to navigate to the next screen
-                        showNextScreenButton(connectedWifiName)
-                    } else {
-                        // User is not connected to a Wi-Fi network with the specified SSID prefix
-                        // Show a message asking the user to select the network again
-                        showNetworkSelectionMessage()
-                    }
+                    // carry out the function to send the HTTP request
+                    showNextScreenButton(connectedWifiName)
+//                    // check if he is connected to valid SSID
+//                    if (connectedWifiName.startsWith("A")) {
+//                        // User is connected to a Wi-Fi network with the specified SSID prefix
+//                        // Show a button to navigate to the next screen
+//                        showNextScreenButton(connectedWifiName)
+//                    } else {
+//                        // User is not connected to a Wi-Fi network with the specified SSID prefix
+//                        // Show a message asking the user to select the network again
+//                        showNetworkSelectionMessage()
+//                    }
                 } else {
                     // User is not connected to a Wi-Fi network
                     Toast.makeText(this, "Not connected to Wi-Fi", Toast.LENGTH_SHORT).show()
@@ -156,11 +182,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // modified the function to communicate with the esp32
     private fun showNextScreenButton(wifiname:String) {
         passed_text.setText("Connected to ${wifiname} ")
-        button_connect.setText("Proceed to Registeration")
+        button_connect.setText("Send and Connect WIFI credentials")
         button_connect.setOnClickListener {
-            startActivity(Intent(this , ConnectedActivity::class.java))
+            // Send GET request
+            val getData = mapOf("key1" to "value1", "key2" to "value2")
+            APiClientWifi.sendRequest("GET", "/get_data", getData) { responseBody, exception ->
+                if (exception != null) {
+                    // Handle the exception
+                    return@sendRequest
+                }
+
+                // Process the response body
+                if (responseBody != null) {
+                    // Display the response or handle it as needed
+                    println(responseBody)
+                    Toast.makeText(this , responseBody , Toast.LENGTH_LONG).show()
+                }
+            }
+
         }
     }
 

@@ -46,23 +46,19 @@ class SignUpActivity : AppCompatActivity() {
 
         locationUtils = LocationUtils(this)
 
-        btnSignUp = findViewById(R.id.register)
-        btnLogin = findViewById(R.id.Sign_in)
-
-        btnSignUp.setOnClickListener{
-            startActivity(Intent(this , Transition_page_select::class.java))
-        }
-
-        btnLogin.setOnClickListener {
-            startActivity(Intent(this , LoginActivity::class.java))
-        }
-        checkLocationPermission()
+//        checkLocationPermission()
 
         var test_button = findViewById<Button>(R.id.test)
 
         test_button.setOnClickListener {
 //            throw RuntimeException("Test Crash") // Force a crash
-            startActivity(Intent(this , AzureConnectionTest::class.java))
+            startActivity(Intent(this , MainActivity::class.java))
+        }
+
+        val network_buttpn = findViewById<Button>(R.id.network_mode)
+
+        network_buttpn.setOnClickListener {
+            startActivity(Intent(this , AzureConnectionTest::class.java ))
         }
     }
 

@@ -25,14 +25,13 @@
         android:id="@+id/passed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You will be redirected to connect!"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/logoImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:text="Connect to the WIFI!"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
     <Button
         android:id="@+id/connect"
@@ -46,6 +45,19 @@
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passed" />
+
+    <Button
+        android:id="@+id/test_connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/btn_primary"
+        android:text="Pair Your device"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connect" />
 
     <TextView
         android:layout_width="wrap_content"
