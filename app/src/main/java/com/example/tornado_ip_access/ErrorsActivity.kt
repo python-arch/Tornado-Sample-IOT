@@ -117,7 +117,6 @@ class ErrorsActivity : AppCompatActivity() {
                     wifiErrorTextView.text = faultData.getString("Wifi_error")
                     roomTempError26_1TextView.text =  faultData.getString("Room_temperature_error")
                     roomTempError26_2TextView.text =  faultData.getString("Evaporator_temperature_error")
-
                 }
 //                Log.d("display", response)
             } catch (e: Exception) {

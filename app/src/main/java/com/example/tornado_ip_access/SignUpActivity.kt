@@ -48,17 +48,14 @@ class SignUpActivity : AppCompatActivity() {
 
 //        checkLocationPermission()
 
-        var test_button = findViewById<Button>(R.id.test)
 
-        test_button.setOnClickListener {
-//            throw RuntimeException("Test Crash") // Force a crash
-            startActivity(Intent(this , MainActivity::class.java))
-        }
 
-        val network_buttpn = findViewById<Button>(R.id.network_mode)
+        // add login feature
 
-        network_buttpn.setOnClickListener {
-            startActivity(Intent(this , AzureConnectionTest::class.java ))
+        val login_btn = findViewById<Button>(R.id.register)
+
+        login_btn.setOnClickListener {
+                startActivity(Intent(this , LoginActivity::class.java))
         }
     }
 

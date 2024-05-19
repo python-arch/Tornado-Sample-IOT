@@ -9,6 +9,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,11 +38,12 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         btnLogin.setOnClickListener {
-            login()
+           login()
         }
 
+
         tvRedirectSignUp.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             // using finish() to end the activity
             finish()
@@ -54,7 +59,28 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Successfully LoggedIn", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this , Dashboard_Activity::class.java))
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null) {
+                    val userRef = FirebaseDatabase.getInstance().getReference("users/${user.uid}")
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val emailVerified = dataSnapshot.child("emailVerified").getValue(Boolean::class.java)
+                            if (emailVerified == true) {
+                                startActivity(Intent(this@LoginActivity , After_Login::class.java))
+                            } else {
+                                startActivity(Intent(this@LoginActivity , Verify_Email::class.java))
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                           Toast.makeText(this@LoginActivity , databaseError.toString(), Toast.LENGTH_LONG).show()
+                        }
+                    })
+                } else {
+                    // User is not signed in
+                    // Handle this case as needed
+                }
+                startActivity(Intent(this , SignUpActivity::class.java))
             } else
                 Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
         }

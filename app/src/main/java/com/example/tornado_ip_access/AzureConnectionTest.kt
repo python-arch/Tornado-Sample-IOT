@@ -38,6 +38,30 @@ class AzureConnectionTest : AppCompatActivity() {
         button_error.setOnClickListener{
             startActivity(Intent(this , ErrorsActivity::class.java))
         }
+
+        // reset_wifi
+        val reset_wifi : Button = findViewById(R.id.btn_reset_wifi)
+        reset_wifi.setOnClickListener {
+            resetWifi()
+        }
+    }
+
+    private fun resetWifi(){
+        ApiClient.sendRequest("/reset_wifi"){ response , err ->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error fetching display value", err)
+                return@sendRequest
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
+                return@sendRequest
+            }
+
+            startActivity(Intent(this , After_Login::class.java))
+        }
     }
 
     fun onUpButtonClick(view: View) {
@@ -66,6 +90,7 @@ class AzureConnectionTest : AppCompatActivity() {
         ApiClient.sendChangeRequest("/down", sent_val.toString()) { response, error ->
             if (error != null) {
                 Log.e("ApiClient", "Error: $error")
+                Toast.makeText(this,"Error: $error", Toast.LENGTH_LONG).show()
                 // Handle error
             } else {
                 Log.d("ApiClient", "Response: $response")
@@ -97,6 +122,7 @@ class AzureConnectionTest : AppCompatActivity() {
                 val tempData = jsonObject.getJSONObject("temp_data")
                 val humidity_data = jsonObject.getJSONObject("humidity_data")
                 val power_data  = jsonObject.getJSONObject("power_data")
+                val mode_data = jsonObject.getJSONObject("mode_data")
 
 
                 runOnUiThread {
@@ -117,7 +143,9 @@ class AzureConnectionTest : AppCompatActivity() {
                     findViewById<TextView>(R.id.HUMIDITY_RATIO).text ="HUMIDITY_RATIO: "+ humidity_data.getString("HUMIDITY_RATIO")
                     // power data
                     findViewById<TextView>(R.id.DAILY_AVERAGE_POWER_WATT).text = power_data.getString("DAILY_AVERAGE_POWER_WATT")
-
+                    // mode data
+                    findViewById<TextView>(R.id.mode).text = mode_data.getString("MODE")
+                    findViewById<TextView>(R.id.features).text = mode_data.getString("FEATURES")
                 }
 //                Log.d("display", response)
             } catch (e: Exception) {
