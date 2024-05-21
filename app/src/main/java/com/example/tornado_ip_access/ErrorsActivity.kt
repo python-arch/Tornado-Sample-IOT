@@ -1,6 +1,7 @@
 package com.example.tornado_ip_access
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -97,26 +98,87 @@ class ErrorsActivity : AppCompatActivity() {
                 runOnUiThread {
                     // Update TextViews with extracted data
                     // fault data
-                    shortCircuitTextView.text = faultData.getString("Short_circuit_in_outdoor_temperature_sensors")
-                    compressorTextView.text =  faultData.getString("Compressor_ambient_High_Temperature")
-                    outdoorUnitTextView.text = faultData.getString("Outdoor_unit_stop")
-                    openCircuitTextView.text = faultData.getString("Open_circuit_in_outdoor_temperature_sensors")
-                    increaseOutdoorUnitDcCurrent6TextView.text =  faultData.getString("Increase_in_outdoor_unit_AC_current")
-                    increaseOutdoorUnitDcCurrent7TextView.text =  faultData.getString("Increase_in_outdoor_unit_DC_current")
-                    cycleTempTextView.text = faultData.getString("Cycle_temperature_error")
-                    gasLeakTextView.text = faultData.getString("Gas_leakage")
-                    error9TextView.text =  faultData.getString("Outdoor_PCB_Corrupted")
-                    outdoorFanTextView.text = faultData.getString("Outdoor_fan_motor")
-                    outdoorPcbTextView.text =  faultData.getString("Outdoor_PCB_fuse")
-                    speedErrorTextView.text =  faultData.getString("Compressor_speed_error")
-                    voltTextView.text =  faultData.getString("Voltage_problem")
-                    missConnectionTextView.text =  faultData.getString("Miss_connection_between_indoor_and_outdoor")
-                    badConnectionTextView.text =  faultData.getString("Bad_connection_between_indoor_and_outdoor")
-                    indoorFanTextView.text = faultData.getString("Indoor_fan_motor")
-                    wrongEepromTextView.text = faultData.getString("Wrong_EEPROM")
-                    wifiErrorTextView.text = faultData.getString("Wifi_error")
-                    roomTempError26_1TextView.text =  faultData.getString("Room_temperature_error")
-                    roomTempError26_2TextView.text =  faultData.getString("Evaporator_temperature_error")
+                    shortCircuitTextView.text = "1. " + faultData.getString("Short_circuit_in_outdoor_temperature_sensors")
+                    if (faultData.getString("Short_circuit_in_outdoor_temperature_sensors").equals("OUTDOOR_SENSOR_HAPPEN")) {
+                        shortCircuitTextView.setTextColor(Color.RED);  // Setting the text color to red
+                    }
+                    compressorTextView.text = "2. " + faultData.getString("Compressor_ambient_High_Temperature")
+                    if (faultData.getString("Compressor_ambient_High_Temperature").equals("COMPRESSOR_AMBIENT_HIGH_TEMP_HAPPEN")) {
+                        compressorTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    outdoorUnitTextView.text = "3. " + faultData.getString("Outdoor_unit_stop")
+                    if (faultData.getString("Outdoor_unit_stop").equals("OUTDOOR_UNIT_STOP_HAPPEN")) {
+                        outdoorUnitTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    openCircuitTextView.text = "4. "+ faultData.getString("Open_circuit_in_outdoor_temperature_sensors")
+                    if (faultData.getString("Open_circuit_in_outdoor_temperature_sensors").equals("OUTDOOR_SENSOR_OPEN_CIRCUIT_HAPPEN")) {
+                        openCircuitTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    increaseOutdoorUnitDcCurrent6TextView.text = "5. " +  faultData.getString("Increase_in_outdoor_unit_AC_current")
+                    if (faultData.getString("Increase_in_outdoor_unit_AC_current").equals("OUTDOOR_UNIT_AC_CURRENT_INCREASE_HAPPEN")) {
+                        increaseOutdoorUnitDcCurrent6TextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    increaseOutdoorUnitDcCurrent7TextView.text =  "6. "+ faultData.getString("Increase_in_outdoor_unit_DC_current")
+                    if (faultData.getString("Increase_in_outdoor_unit_DC_current").equals("OUTDOOR_UNIT_DC_CURRENT_INCREASE_HAPPEN")) {
+                        increaseOutdoorUnitDcCurrent7TextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    cycleTempTextView.text = "7. "+faultData.getString("Cycle_temperature_error")
+                    if (faultData.getString("Cycle_temperature_error").equals("CYCLE_TEMP_ERROR_HAPPEN")) {
+                        cycleTempTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    gasLeakTextView.text = "8. "+ faultData.getString("Gas_leakage")
+                    if (faultData.getString("Gas_leakage").equals("GAS_LEAKAGE_HAPPEN")) {
+                        gasLeakTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    error9TextView.text = "9. "+ faultData.getString("Outdoor_PCB_Corrupted")
+                    if (faultData.getString("Outdoor_PCB_Corrupted").equals("OUTDOOR_PCB_CORRUPTED_HAPPEN")) {
+                        error9TextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    outdoorFanTextView.text ="10. " +faultData.getString("Outdoor_fan_motor")
+                    if (faultData.getString("Outdoor_fan_motor").equals("OUTDOOR_FAN_MOTOR_HAPPEN")) {
+                        outdoorFanTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    outdoorPcbTextView.text = "11. " + faultData.getString("Outdoor_PCB_fuse")
+                    if (faultData.getString("Outdoor_PCB_fuse").equals("OUTDOOR_PCB_FUSE_HAPPEN")) {
+                        outdoorPcbTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    speedErrorTextView.text = "12. "+ faultData.getString("Compressor_speed_error")
+                    if (faultData.getString("Compressor_speed_error").equals("COMPRESSOR_SPEED_ERROR_HAPPEN")) {
+                        speedErrorTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    voltTextView.text = "13. "+  faultData.getString("Voltage_problem")
+                    if (faultData.getString("Voltage_problem").equals("VOLTAGE_PROBLEM_HAPPEN")) {
+                        voltTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    missConnectionTextView.text = "14. "+ faultData.getString("Miss_connection_between_indoor_and_outdoor")
+                    if (faultData.getString("Miss_connection_between_indoor_and_outdoor").equals("MISSING_CONNECTION_HAPPEN")) {
+                        missConnectionTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    badConnectionTextView.text =  "15. "+ faultData.getString("Bad_connection_between_indoor_and_outdoor")
+                    if (faultData.getString("Bad_connection_between_indoor_and_outdoor").equals("BAD_CONNECTION_HAPPEN")) {
+                        badConnectionTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    indoorFanTextView.text = "16. "+ faultData.getString("Indoor_fan_motor")
+                    if (faultData.getString("Indoor_fan_motor").equals("INDOOR_FAN_MOTOR_HAPPEN")) {
+                        indoorFanTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    wrongEepromTextView.text = "17. "+ faultData.getString("Wrong_EEPROM")
+                    if (faultData.getString("Wrong_EEPROM").equals("WRONG_EEPROM_HAPPEN")) {
+                        wrongEepromTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    wifiErrorTextView.text = "18. "+ faultData.getString("Wifi_error")
+                    if (faultData.getString("Wifi_error").equals("WIFI_ERROR_HAPPEN")) {
+                        wifiErrorTextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+                    roomTempError26_1TextView.text = "19. "+ faultData.getString("Room_temperature_error")
+                    if (faultData.getString("Room_temperature_error").equals("ROOM_TEMP_ERROR_HAPPEN")) {
+                        roomTempError26_1TextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
+
+                    roomTempError26_2TextView.text =  "20. "+ faultData.getString("Evaporator_temperature_error")
+                    if (faultData.getString("Evaporator_temperature_error").equals("EVAPORATOR_TEMP_ERROR_HAPPEN")) {
+                        roomTempError26_2TextView.setTextColor(Color.RED)  // Setting the text color to red
+                    }
                 }
 //                Log.d("display", response)
             } catch (e: Exception) {

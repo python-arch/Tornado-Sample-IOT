@@ -10,12 +10,12 @@
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
-            android:layout_height="90dp"
+            android:layout_height="59dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="-18dp"
+            android:layout_marginTop="-7dp"
             android:layout_marginEnd="95dp"
             android:src="@drawable/tornado_logo" />
 
@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="-7dp"
             android:background="@drawable/btn_primary"
             android:onClick="onUpButtonClick"
             android:text="Up" />
@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
 
             android:layout_below="@+id/logo"
-            android:layout_marginStart="140dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="222dp"
+            android:layout_marginTop="-8dp"
             android:layout_toEndOf="@+id/upButton"
             android:background="@drawable/btn_primary"
             android:onClick="onDownButtonClick"
@@ -46,7 +46,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="576dp"
+            android:layout_height="626dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
@@ -59,13 +59,13 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="150dp"
+                    android:layout_height="204dp"
+                    android:layout_marginStart="4dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
                         <TextView
                             android:id="@+id/textView10"
@@ -124,12 +124,14 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/btn_reset_wifi"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintVertical_bias="0.768">
 
                         <TextView
                             android:id="@+id/textView12"
@@ -170,16 +172,14 @@
                             android:textSize="12sp" />
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="84dp"
+                    android:layout_marginStart="70dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/LinearLayout5"
                     app:layout_constraintStart_toEndOf="@+id/linearLayout2">
 
@@ -218,11 +218,10 @@
                     android:id="@+id/LinearLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="84dp"
+                    android:layout_marginStart="70dp"
                     android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/button_next_errors"
                     app:layout_constraintStart_toEndOf="@+id/linearLayout2">
 
@@ -261,13 +260,12 @@
                     android:id="@+id/linearLayout4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.588"
+                    app:layout_constraintHorizontal_bias="0.537"
                     app:layout_constraintStart_toEndOf="@+id/linearLayout">
 
                         <TextView
@@ -290,30 +288,32 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
+                    android:id="@+id/linearLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout"
+                    app:layout_constraintEnd_toStartOf="@+id/button_get_power"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/textView14"
+                            android:id="@+id/textView17"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
-                            android:text="Power Data"
+                            android:text="Average Power Data"
                             android:textColor="#000000" />
+
 
                         <TextView
                             android:id="@+id/DAILY_AVERAGE_POWER_WATT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
                             android:background="@drawable/txt_primary"
                             android:padding="10dp"
                             android:text="DAILY_AVERAGE_POWER_WATT"
@@ -321,7 +321,36 @@
                             android:textSize="13sp" />
 
 
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Current Power Data"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/CURRENT_POWER_WATT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:background="@drawable/txt_primary"
+                            android:padding="10dp"
+                            android:text="CURRENT_POWER_WATT"
+                            android:textColor="#000000"
+                            android:textSize="13sp" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_get_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginEnd="28dp"
+                    android:background="@drawable/btn_primary"
+                    android:padding="5dp"
+                    android:text="Get Average PWR"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/button_next_errors"
@@ -352,19 +381,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/button_next_errors" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/pineLogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/splash_logo"
-            app:lottie_repeatMode="reverse" />
 
 
 </RelativeLayout>

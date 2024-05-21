@@ -12,6 +12,7 @@ import org.json.JSONObject
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import com.google.android.gms.common.api.Api
 
 
 class AzureConnectionTest : AppCompatActivity() {
@@ -20,12 +21,21 @@ class AzureConnectionTest : AppCompatActivity() {
     private val runnable = object : Runnable {
         override fun run() {
             fetchData()
-            handler.postDelayed(this, 1000) // Repeat every 1 second
+            handler.postDelayed(this, 500) // Repeat every 1 second
         }
     }
+
+    private val buttonHandler = Handler(Looper.getMainLooper())
+    private var sendRequestRunnable: Runnable? = null
+
+    private var numberofUps = 0
+    private var numberofDowns =0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_azure_connection_test)
+
+        // send request that the app is open
 
         // Fetch and display initial display value
         fetchData()
@@ -44,20 +54,101 @@ class AzureConnectionTest : AppCompatActivity() {
         reset_wifi.setOnClickListener {
             resetWifi()
         }
+
+        // add button to get the average power data
+        val average_power_button:Button = findViewById(R.id.button_get_power)
+        average_power_button.setOnClickListener {
+           getAveragePower()
+        }
     }
 
-    private fun resetWifi(){
-        ApiClient.sendRequest("/reset_wifi"){ response , err ->
+    override fun onStart() {
+        super.onStart()
+
+        onActivityOpened()
+        // Start the runnable when the activity starts
+        handler.post(runnable)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        onActivityClosed()
+        // Stop the runnable when the activity stops
+        handler.removeCallbacks(runnable)
+    }
+
+    private fun onActivityOpened() {
+        // code to execute when the activity is opened
+        val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
+        val regex = Regex("""\d+""")
+        val matchResult = regex.find(temp_val)
+        val numericValue = matchResult?.value?.toIntOrNull()
+        ApiClient.sendChangeRequest("/app_open" , numericValue.toString()){ response , err->
             if (err != null) {
                 // Handle error
-                Log.e("AzureConnectionTest", "Error fetching display value", err)
-                return@sendRequest
+                Log.e("AzureConnectionTest", "Error sending OPEN State", err)
             }
 
             if (response!!.isEmpty()) {
                 // Handle empty response
                 Log.e("AzureConnectionTest", "Empty response")
-                return@sendRequest
+            }
+        }
+    }
+
+    private fun onActivityClosed() {
+        val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
+        val regex = Regex("""\d+""")
+        val matchResult = regex.find(temp_val)
+        val numericValue = matchResult?.value?.toIntOrNull()
+        // code to execute when the activity is closed
+        ApiClient.sendChangeRequest("/app_closed" , numericValue.toString()){ response , err->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error sending CLOSED State", err)
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
+            }
+        }
+    }
+
+
+    private fun getAveragePower(){
+        val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
+        val regex = Regex("""\d+""")
+        val matchResult = regex.find(temp_val)
+        val numericValue = matchResult?.value?.toIntOrNull()
+        ApiClient.sendChangeRequest("/get_power" , numericValue.toString()){response , err->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error fetching POWER value", err)
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
+            }
+
+        }
+    }
+
+    private fun resetWifi(){
+        val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
+        val regex = Regex("""\d+""")
+        val matchResult = regex.find(temp_val)
+        val numericValue = matchResult?.value?.toIntOrNull()
+        ApiClient.sendChangeRequest("/reset_wifi" ,numericValue.toString() ){ response , err ->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error Resetting WIFI", err)
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
             }
 
             startActivity(Intent(this , After_Login::class.java))
@@ -68,17 +159,32 @@ class AzureConnectionTest : AppCompatActivity() {
         val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
         val regex = Regex("""\d+""")
         val matchResult = regex.find(temp_val)
+        numberofUps+=1
         val numericValue = matchResult?.value?.toIntOrNull()
-        val sent_val = numericValue?.plus(1) ?: 0
-        ApiClient.sendChangeRequest("/up", sent_val.toString()) { response, error ->
-            if (error != null) {
-                Log.e("ApiClient", "Error: $error")
-                // Handle error
-            } else {
-                Log.d("ApiClient", "Response: $response")
-                // Handle response
+
+        // Cancel any previously posted runnable
+        sendRequestRunnable?.let { buttonHandler.removeCallbacks(it) }
+
+        // Create a new runnable to send the request after a delay
+        sendRequestRunnable = Runnable {
+            var sent_value = numericValue?.plus(numberofUps)!!.toInt()
+            if(sent_value>99){
+                sent_value =99
+            }
+            ApiClient.sendChangeRequest("/up", sent_value.toString()) { response, error ->
+                if (error != null) {
+                    Log.e("ApiClient", "Error: $error")
+                    // Handle error
+                } else {
+                    Log.d("ApiClient", "Response: $response")
+                    // Handle response
+                }
+                numberofUps=0
             }
         }
+
+        // Post the new runnable with a delay of 300 milliseconds (adjust as needed)
+        buttonHandler.postDelayed(sendRequestRunnable!!, 500)
     }
 
     fun onDownButtonClick(view: View) {
@@ -86,17 +192,31 @@ class AzureConnectionTest : AppCompatActivity() {
         val regex = Regex("""\d+""")
         val matchResult = regex.find(temp_val)
         val numericValue = matchResult?.value?.toIntOrNull()
-        val sent_val = numericValue?.minus(1) ?: 0
-        ApiClient.sendChangeRequest("/down", sent_val.toString()) { response, error ->
-            if (error != null) {
-                Log.e("ApiClient", "Error: $error")
-                Toast.makeText(this,"Error: $error", Toast.LENGTH_LONG).show()
-                // Handle error
-            } else {
-                Log.d("ApiClient", "Response: $response")
-                // Handle response
+       numberofDowns+=1
+        // Cancel any previously posted runnable
+        sendRequestRunnable?.let { buttonHandler.removeCallbacks(it) }
+
+        // Create a new runnable to send the request after a delay
+        sendRequestRunnable = Runnable {
+            var sent_value = numericValue?.minus(numberofDowns)!!.toInt()
+            if(sent_value<0){
+                sent_value =0
+            }
+            ApiClient.sendChangeRequest("/down", sent_value.toString()) { response, error ->
+                if (error != null) {
+                    Log.e("ApiClient", "Error: $error")
+                    // Handle error
+                } else {
+                    Log.d("ApiClient", "Response: $response")
+                    // Handle response
+                }
+
+                numberofDowns = 0
             }
         }
+
+        // Post the new runnable with a delay of 300 milliseconds (adjust as needed)
+        buttonHandler.postDelayed(sendRequestRunnable!!, 500)
     }
 
     @SuppressLint("SetTextI18n")
@@ -141,7 +261,8 @@ class AzureConnectionTest : AppCompatActivity() {
                     findViewById<TextView>(R.id.TEMP_CELSIUS_OUTDOOR).text = "TEMP_OUTDOOR: "+ tempData.getString("TEMP_CELSIUS_OUTDOOR")
                     // humidity data
                     findViewById<TextView>(R.id.HUMIDITY_RATIO).text ="HUMIDITY_RATIO: "+ humidity_data.getString("HUMIDITY_RATIO")
-                    // power data
+                    // current power data
+                    findViewById<TextView>(R.id.CURRENT_POWER_WATT).text = power_data.getString("CURRENT_POWER_WATT")
                     findViewById<TextView>(R.id.DAILY_AVERAGE_POWER_WATT).text = power_data.getString("DAILY_AVERAGE_POWER_WATT")
                     // mode data
                     findViewById<TextView>(R.id.mode).text = mode_data.getString("MODE")
