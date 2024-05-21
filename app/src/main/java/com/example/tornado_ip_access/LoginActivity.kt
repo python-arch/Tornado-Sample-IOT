@@ -44,9 +44,9 @@ class LoginActivity : AppCompatActivity() {
 
         tvRedirectSignUp.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
             // using finish() to end the activity
             finish()
+            startActivity(intent)
         }
     }
 
@@ -80,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     // User is not signed in
                     // Handle this case as needed
                 }
+                finish()
                 startActivity(Intent(this , SignUpActivity::class.java))
             } else
                 Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
