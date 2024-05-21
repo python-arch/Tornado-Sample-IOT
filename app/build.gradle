@@ -67,6 +67,7 @@ dependencies {
     implementation ('javax.xml.stream:stax-api:1.0-2')
     implementation 'org.slf4j:slf4j-android:1.7.29'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     // Add the dependencies for the Crashlytics and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
 

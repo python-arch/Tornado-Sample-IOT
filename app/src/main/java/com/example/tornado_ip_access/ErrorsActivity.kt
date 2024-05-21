@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.TextView
+import androidx.core.view.isVisible
 import org.json.JSONObject
 
 class ErrorsActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class ErrorsActivity : AppCompatActivity() {
     private val runnable = object : Runnable {
         override fun run() {
             fetchData()
-            handler.postDelayed(this, 500) // Repeat every 1 second
+            handler.postDelayed(this, 1000) // Repeat every 1 second
         }
     }
 
@@ -40,11 +41,21 @@ class ErrorsActivity : AppCompatActivity() {
     private lateinit var wifiErrorTextView: TextView
     private lateinit var roomTempError26_1TextView: TextView
     private lateinit var roomTempError26_2TextView: TextView
-    private  lateinit var  temp_val:String
+    private lateinit var temp_val: String
+    private lateinit var features_val:String
+    private lateinit var  mode_val:String
+    private lateinit var plasma_val:String
+    private lateinit var fan_val:String
+    private lateinit var h_louvre_val:String
+    private lateinit var v_louvre_val:String
+    private lateinit var timer_state_val:String
+    private lateinit var timer_hours_val:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_errors)
 
+        // Initialize TextViews
         shortCircuitTextView = findViewById(R.id.Short_circuit)
         compressorTextView = findViewById(R.id.Compressor)
         outdoorUnitTextView = findViewById(R.id.outdoor_unit)
@@ -66,171 +77,109 @@ class ErrorsActivity : AppCompatActivity() {
         roomTempError26_1TextView = findViewById(R.id.room_temp_error_26_1)
         roomTempError26_2TextView = findViewById(R.id.room_temp_error_26_2)
 
-//        // Fetch and display initial display value
-//        fetchData()
-//
-//        // repeat the task
-//        handler.post(runnable)
-
+        // get intent
         temp_val = intent.getStringExtra("temp")!!
-    }
+        features_val = intent.getStringExtra("features")!!
+        mode_val = intent.getStringExtra("mode")!!
+        plasma_val = intent.getStringExtra("plasma")!!
+        fan_val = intent.getStringExtra("fan")!!
+        h_louvre_val = intent.getStringExtra("h_louvre")!!
+        v_louvre_val = intent.getStringExtra("v_louvre")!!
+        timer_state_val = intent.getStringExtra("timer_state")!!
+        timer_hours_val = intent.getStringExtra("timer_hours")!!
 
-    override fun onStart() {
-        super.onStart()
-
-        onActivityOpened()
-        // Start the runnable when the activity starts
+        fetchData()
         handler.post(runnable)
+
     }
 
-    override fun onStop() {
-        super.onStop()
-        onActivityClosed()
-        // Stop the runnable when the activity stops
-        handler.removeCallbacks(runnable)
-    }
+
+//    override fun onStart() {
+//        super.onStart()
+//        onActivityOpened()
+//
+//    }
+
 
     private fun onActivityOpened() {
-        // code to execute when the activity is opened
-        ApiClient.sendChangeRequest("/app_open" , temp_val){ response , err->
+        ApiClient.sendChangeRequest("/app_open", features_val , mode_val,plasma_val,fan_val,h_louvre_val,v_louvre_val,timer_state_val,timer_hours_val,temp_val) { response, err ->
             if (err != null) {
-                // Handle error
-                Log.e("AzureConnectionTest", "Error sending OPEN State", err)
-            }
-
-            if (response!!.isEmpty()) {
-                // Handle empty response
-                Log.e("AzureConnectionTest", "Empty response")
+                Log.e("ErrorsActivity", "Error sending OPEN State", err)
+            } else if (response.isNullOrEmpty()) {
+                Log.e("ErrorsActivity", "Empty response")
+            } else {
+                Log.d("ErrorsActivity", response)
             }
         }
     }
 
-    private fun onActivityClosed() {
-        ApiClient.sendChangeRequest("/app_closed" , temp_val){ response , err->
-            if (err != null) {
-                // Handle error
-                Log.e("AzureConnectionTest", "Error sending CLOSED State", err)
-            }
-
-            if (response!!.isEmpty()) {
-                // Handle empty response
-                Log.e("AzureConnectionTest", "Empty response")
-            }
-        }
+    override fun onPause() {
+        super.onPause()
+        onActivityClosed()
     }
-
     @SuppressLint("SetTextI18n")
     private fun fetchData() {
         ApiClient.sendRequest("/get_data") { response, error ->
             if (error != null) {
-                // Handle error
-                Log.e("AzureConnectionTest", "Error fetching display value", error)
+                Log.e("ErrorsActivity", "Error fetching display value", error)
                 return@sendRequest
             }
 
             if (response!!.isEmpty()) {
-                // Handle empty response
-                Log.e("AzureConnectionTest", "Empty response")
+                Log.e("ErrorsActivity", "Empty response")
                 return@sendRequest
             }
 
             try {
                 val jsonObject = JSONObject(response)
-                // Extract individual fields
                 val faultData = jsonObject.getJSONObject("fault_data")
 
-
                 runOnUiThread {
-                    // Update TextViews with extracted data
-                    // fault data
-                    shortCircuitTextView.text = "1. " + faultData.getString("Short_circuit_in_outdoor_temperature_sensors")
-                    if (faultData.getString("Short_circuit_in_outdoor_temperature_sensors").equals("OUTDOOR_SENSOR_HAPPEN")) {
-                        shortCircuitTextView.setTextColor(Color.RED);  // Setting the text color to red
-                    }
-                    compressorTextView.text = "2. " + faultData.getString("Compressor_ambient_High_Temperature")
-                    if (faultData.getString("Compressor_ambient_High_Temperature").equals("COMPRESSOR_AMBIENT_HIGH_TEMP_HAPPEN")) {
-                        compressorTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    outdoorUnitTextView.text = "3. " + faultData.getString("Outdoor_unit_stop")
-                    if (faultData.getString("Outdoor_unit_stop").equals("OUTDOOR_UNIT_STOP_HAPPEN")) {
-                        outdoorUnitTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    openCircuitTextView.text = "4. "+ faultData.getString("Open_circuit_in_outdoor_temperature_sensors")
-                    if (faultData.getString("Open_circuit_in_outdoor_temperature_sensors").equals("OUTDOOR_SENSOR_OPEN_CIRCUIT_HAPPEN")) {
-                        openCircuitTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    increaseOutdoorUnitDcCurrent6TextView.text = "5. " +  faultData.getString("Increase_in_outdoor_unit_AC_current")
-                    if (faultData.getString("Increase_in_outdoor_unit_AC_current").equals("OUTDOOR_UNIT_AC_CURRENT_INCREASE_HAPPEN")) {
-                        increaseOutdoorUnitDcCurrent6TextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    increaseOutdoorUnitDcCurrent7TextView.text =  "6. "+ faultData.getString("Increase_in_outdoor_unit_DC_current")
-                    if (faultData.getString("Increase_in_outdoor_unit_DC_current").equals("OUTDOOR_UNIT_DC_CURRENT_INCREASE_HAPPEN")) {
-                        increaseOutdoorUnitDcCurrent7TextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    cycleTempTextView.text = "7. "+faultData.getString("Cycle_temperature_error")
-                    if (faultData.getString("Cycle_temperature_error").equals("CYCLE_TEMP_ERROR_HAPPEN")) {
-                        cycleTempTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    gasLeakTextView.text = "8. "+ faultData.getString("Gas_leakage")
-                    if (faultData.getString("Gas_leakage").equals("GAS_LEAKAGE_HAPPEN")) {
-                        gasLeakTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    error9TextView.text = "9. "+ faultData.getString("Outdoor_PCB_Corrupted")
-                    if (faultData.getString("Outdoor_PCB_Corrupted").equals("OUTDOOR_PCB_CORRUPTED_HAPPEN")) {
-                        error9TextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    outdoorFanTextView.text ="10. " +faultData.getString("Outdoor_fan_motor")
-                    if (faultData.getString("Outdoor_fan_motor").equals("OUTDOOR_FAN_MOTOR_HAPPEN")) {
-                        outdoorFanTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    outdoorPcbTextView.text = "11. " + faultData.getString("Outdoor_PCB_fuse")
-                    if (faultData.getString("Outdoor_PCB_fuse").equals("OUTDOOR_PCB_FUSE_HAPPEN")) {
-                        outdoorPcbTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    speedErrorTextView.text = "12. "+ faultData.getString("Compressor_speed_error")
-                    if (faultData.getString("Compressor_speed_error").equals("COMPRESSOR_SPEED_ERROR_HAPPEN")) {
-                        speedErrorTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    voltTextView.text = "13. "+  faultData.getString("Voltage_problem")
-                    if (faultData.getString("Voltage_problem").equals("VOLTAGE_PROBLEM_HAPPEN")) {
-                        voltTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    missConnectionTextView.text = "14. "+ faultData.getString("Miss_connection_between_indoor_and_outdoor")
-                    if (faultData.getString("Miss_connection_between_indoor_and_outdoor").equals("MISSING_CONNECTION_HAPPEN")) {
-                        missConnectionTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    badConnectionTextView.text =  "15. "+ faultData.getString("Bad_connection_between_indoor_and_outdoor")
-                    if (faultData.getString("Bad_connection_between_indoor_and_outdoor").equals("BAD_CONNECTION_HAPPEN")) {
-                        badConnectionTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    indoorFanTextView.text = "16. "+ faultData.getString("Indoor_fan_motor")
-                    if (faultData.getString("Indoor_fan_motor").equals("INDOOR_FAN_MOTOR_HAPPEN")) {
-                        indoorFanTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    wrongEepromTextView.text = "17. "+ faultData.getString("Wrong_EEPROM")
-                    if (faultData.getString("Wrong_EEPROM").equals("WRONG_EEPROM_HAPPEN")) {
-                        wrongEepromTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    wifiErrorTextView.text = "18. "+ faultData.getString("Wifi_error")
-                    if (faultData.getString("Wifi_error").equals("WIFI_ERROR_HAPPEN")) {
-                        wifiErrorTextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-                    roomTempError26_1TextView.text = "19. "+ faultData.getString("Room_temperature_error")
-                    if (faultData.getString("Room_temperature_error").equals("ROOM_TEMP_ERROR_HAPPEN")) {
-                        roomTempError26_1TextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
-
-                    roomTempError26_2TextView.text =  "20. "+ faultData.getString("Evaporator_temperature_error")
-                    if (faultData.getString("Evaporator_temperature_error").equals("EVAPORATOR_TEMP_ERROR_HAPPEN")) {
-                        roomTempError26_2TextView.setTextColor(Color.RED)  // Setting the text color to red
-                    }
+                    updateTextView(shortCircuitTextView, "1. ", faultData, "Short_circuit_in_outdoor_temperature_sensors", "OUTDOOR_SENSOR_HAPPEN")
+                    updateTextView(compressorTextView, "2. ", faultData, "Compressor_ambient_High_Temperature", "COMPRESSOR_AMBIENT_HIGH_TEMP_HAPPEN")
+                    updateTextView(outdoorUnitTextView, "3. ", faultData, "Outdoor_unit_stop", "OUTDOOR_UNIT_STOP_HAPPEN")
+                    updateTextView(openCircuitTextView, "4. ", faultData, "Open_circuit_in_outdoor_temperature_sensors", "OUTDOOR_SENSOR_OPEN_CIRCUIT_HAPPEN")
+                    updateTextView(increaseOutdoorUnitDcCurrent6TextView, "5. ", faultData, "Increase_in_outdoor_unit_AC_current", "OUTDOOR_UNIT_AC_CURRENT_INCREASE_HAPPEN")
+                    updateTextView(increaseOutdoorUnitDcCurrent7TextView, "6. ", faultData, "Increase_in_outdoor_unit_DC_current", "OUTDOOR_UNIT_DC_CURRENT_INCREASE_HAPPEN")
+                    updateTextView(cycleTempTextView, "7. ", faultData, "Cycle_temperature_error", "CYCLE_TEMP_ERROR_HAPPEN")
+                    updateTextView(gasLeakTextView, "8. ", faultData, "Gas_leakage", "GAS_LEAKAGE_HAPPEN")
+                    updateTextView(error9TextView, "9. ", faultData, "Outdoor_PCB_Corrupted", "OUTDOOR_PCB_CORRUPTED_HAPPEN")
+                    updateTextView(outdoorFanTextView, "10. ", faultData, "Outdoor_fan_motor", "OUTDOOR_FAN_MOTOR_HAPPEN")
+                    updateTextView(outdoorPcbTextView, "11. ", faultData, "Outdoor_PCB_fuse", "OUTDOOR_PCB_FUSE_HAPPEN")
+                    updateTextView(speedErrorTextView, "12. ", faultData, "Compressor_speed_error", "COMPRESSOR_SPEED_ERROR_HAPPEN")
+                    updateTextView(voltTextView, "13. ", faultData, "Voltage_problem", "VOLTAGE_PROBLEM_HAPPEN")
+                    updateTextView(missConnectionTextView, "14. ", faultData, "Miss_connection_between_indoor_and_outdoor", "MISSING_CONNECTION_HAPPEN")
+                    updateTextView(badConnectionTextView, "15. ", faultData, "Bad_connection_between_indoor_and_outdoor", "BAD_CONNECTION_HAPPEN")
+                    updateTextView(indoorFanTextView, "16. ", faultData, "Indoor_fan_motor", "INDOOR_FAN_MOTOR_HAPPEN")
+                    updateTextView(wrongEepromTextView, "17. ", faultData, "Wrong_EEPROM", "WRONG_EEPROM_HAPPEN")
+                    updateTextView(wifiErrorTextView, "18. ", faultData, "Wifi_error", "WIFI_ERROR_HAPPEN")
+                    updateTextView(roomTempError26_1TextView, "19. ", faultData, "Room_temperature_error", "ROOM_TEMP_ERROR_HAPPEN")
+                    updateTextView(roomTempError26_2TextView, "20. ", faultData, "Evaporator_temperature_error", "EVAPORATOR_TEMP_ERROR_HAPPEN")
                 }
-//                Log.d("display", response)
             } catch (e: Exception) {
-                // Handle JSON parsing error
-                Log.e("AzureConnectionTest", "Error parsing JSON", e)
+                Log.e("Errors Activity", "Error parsing JSON", e)
             }
         }
+    }
 
+    private fun onActivityClosed() {
+
+        ApiClient.sendChangeRequest("/app_closed", features_val , mode_val,plasma_val,fan_val,h_louvre_val,v_louvre_val,timer_state_val,timer_hours_val,temp_val) { response, err ->
+            if (err != null) {
+                Log.e("Errors Activity", "Error sending closed State", err)
+            } else if (response.isNullOrEmpty()) {
+                Log.e("Errors Activity", "Empty response")
+            } else {
+                Log.d("Errors Activity", response)
+            }
+        }
+    }
+    private fun updateTextView(textView: TextView, prefix: String, faultData: JSONObject, key: String, errorCondition: String) {
+        textView.text = "$prefix ${faultData.getString(key)}"
+        if (faultData.getString(key) == errorCondition) {
+            textView.setTextColor(Color.RED)
+        }else{
+            textView.isVisible= false
+        }
     }
 }

@@ -29,11 +29,20 @@ public class ApiClient {
             })
         }
 
-        fun sendChangeRequest(endpoint: String, value:String, callback: (String?, Exception?) -> Unit) {
+        fun sendChangeRequest(endpoint: String, features:String,mode:String,plasma:String,fan:String,h_louvre:String,v_louvre:String, timer_state:String, timer_hours:String , temp_user:String, callback: (String?, Exception?) -> Unit) {
             val client = OkHttpClient()
 
-            val json = JSONObject()
-            json.put("value", value)
+            val json = JSONObject().apply {
+                put("features", features)
+                put("mode", mode)
+                put("plasma", plasma)
+                put("fan", fan)
+                put("h_louvre", h_louvre)
+                put("v_louvre", v_louvre)
+                put("timer_state", timer_state)
+                put("timer_hours", timer_hours)
+                put("temp_user", temp_user)
+            }
 
             val body = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             val request = Request.Builder()

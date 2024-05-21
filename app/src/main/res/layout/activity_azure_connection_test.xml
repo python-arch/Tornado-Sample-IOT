@@ -7,10 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".AzureConnectionTest">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/pineLogo"
+            android:layout_width="0.7in"
+            android:layout_height="0.7in"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="85dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/data"
+            app:lottie_repeatMode="reverse" />
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
-            android:layout_height="59dp"
+            android:layout_height="83dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -21,12 +38,13 @@
 
         <Button
             android:id="@+id/upButton"
+            android:padding="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="-7dp"
+            android:layout_marginStart="164dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/btn_primary"
             android:onClick="onUpButtonClick"
             android:text="Up" />
@@ -35,13 +53,16 @@
             android:id="@+id/downButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_below="@+id/logo"
-            android:layout_marginStart="222dp"
-            android:layout_marginTop="-8dp"
-            android:layout_toEndOf="@+id/upButton"
+            android:layout_below="@+id/upButton"
+            android:layout_alignStart="@+id/upButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="157dp"
+            android:layout_marginBottom="172dp"
             android:background="@drawable/btn_primary"
             android:onClick="onDownButtonClick"
+            android:padding="15dp"
             android:text="Down" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,10 +82,9 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="150dp"
                     android:layout_height="204dp"
-                    android:layout_marginStart="4dp"
                     android:gravity="center"
                     android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout5"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
                         <TextView
@@ -74,62 +94,115 @@
                             android:text="Component Data"
                             android:textColor="#000000" />
 
-                        <TextView
-                            android:id="@+id/h_louvre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="42dp"
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="H_LOUVRE"
-                            android:textColor="#000000"
-                            android:textSize="13sp" />
-
-
-                        <TextView
-                            android:id="@+id/plasma"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="2dp">
 
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="PLASMA"
-                            android:textColor="#000000"
-                            android:textSize="12sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="H_LOUVRE"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/fan"
+                                <TextView
+                                    android:id="@+id/h_louvre"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="42dp"
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="H_LOUVRE"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="42dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="2dp">
 
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="FAN"
-                            android:textColor="#000000"
-                            android:textSize="13sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Plasma"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/v_louvre"
+                                <TextView
+                                    android:id="@+id/plasma"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="PLASMA"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="42dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="2dp">
 
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="V_LOUVRE"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Fan"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
 
-                            android:textColor="#000000"
-                            android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/fan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="42dp"
+
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="FAN"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="V_LOUVRE"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/v_louvre"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="42dp"
+
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="V_LOUVRE"
+
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/btn_reset_wifi"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
                     app:layout_constraintVertical_bias="0.768">
 
@@ -140,48 +213,87 @@
                             android:text="Temprature Data"
                             android:textColor="#000000" />
 
-                        <TextView
-                            android:id="@+id/TEMP_CELSIUS_USER"
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="temp_cel_user"
-                            android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:orientation="horizontal">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="User"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
 
-                        <TextView
-                            android:id="@+id/TEMP_CELSIUS_INDOOR"
+                                <TextView
+                                    android:id="@+id/TEMP_CELSIUS_USER"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="temp_cel_user"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="temp_indoor"
-                            android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/TEMP_CELSIUS_OUTDOOR"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Indoor"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+
+
+                                <TextView
+                                    android:id="@+id/TEMP_CELSIUS_INDOOR"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="temp_indoor"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="temp_cel_outdoor"
-                            android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Outdoor"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:id="@+id/TEMP_CELSIUS_OUTDOOR"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="temp_cel_outdoor"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/LinearLayout5"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout2">
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout4">
 
                         <TextView
                             android:id="@+id/textView11"
@@ -200,30 +312,43 @@
                             android:padding="10dp"
                             android:text="Timer State"
                             android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/timer_hours"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                            android:background="@drawable/txt_primary"
-                            android:padding="10dp"
-                            android:text="Timer Hours"
-                            android:textColor="#000000"
-                            android:textSize="12sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hours"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:id="@+id/timer_hours"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:background="@drawable/txt_primary"
+                                    android:padding="10dp"
+                                    android:text="Timer Hours"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                        </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
                     android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/button_next_errors"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout2">
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout3">
 
                         <TextView
                             android:id="@+id/textView"
@@ -242,7 +367,7 @@
                             android:padding="10dp"
                             android:text="FEATURES"
                             android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/mode"
@@ -253,7 +378,7 @@
                             android:padding="10dp"
                             android:text="MODE"
                             android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -284,7 +409,7 @@
                             android:padding="10dp"
                             android:text="HUMIDITY_RATIO"
                             android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -318,7 +443,7 @@
                             android:padding="10dp"
                             android:text="DAILY_AVERAGE_POWER_WATT"
                             android:textColor="#000000"
-                            android:textSize="13sp" />
+                            android:textSize="15sp" />
 
 
                         <TextView
@@ -337,7 +462,7 @@
                             android:padding="10dp"
                             android:text="CURRENT_POWER_WATT"
                             android:textColor="#000000"
-                            android:textSize="13sp" />
+                            android:textSize="15sp" />
                 </LinearLayout>
 
                 <Button
@@ -364,7 +489,8 @@
                     android:padding="10dp"
                     android:text="Go to Errors"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/LinearLayout5" />
 
                 <Button
                     android:id="@+id/btn_reset_wifi"
@@ -378,7 +504,8 @@
                     android:padding="10dp"
                     android:text="Reset Wifi"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button_next_errors" />
+                    app:layout_constraintEnd_toStartOf="@+id/button_next_errors"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
