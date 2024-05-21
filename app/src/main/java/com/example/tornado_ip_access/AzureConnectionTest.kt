@@ -25,8 +25,11 @@ class AzureConnectionTest : AppCompatActivity() {
         }
     }
 
-    private val buttonHandler = Handler(Looper.getMainLooper())
-    private var sendRequestRunnable: Runnable? = null
+    private val buttonupHandler = Handler(Looper.getMainLooper())
+    private var sendRequestupRunnable: Runnable? = null
+
+    private val buttondownHandler = Handler(Looper.getMainLooper())
+    private var sendRequestdownRunnable: Runnable? = null
 
     private var numberofUps = 0
     private var numberofDowns =0
@@ -37,16 +40,22 @@ class AzureConnectionTest : AppCompatActivity() {
 
         // send request that the app is open
 
-        // Fetch and display initial display value
-        fetchData()
-
-        // repeat the task
-        handler.post(runnable)
+//        // Fetch and display initial display value
+//        fetchData()
+//
+//        // repeat the task
+//        handler.post(runnable)
 
         val button_error: Button = findViewById(R.id.button_next_errors)
 
         button_error.setOnClickListener{
-            startActivity(Intent(this , ErrorsActivity::class.java))
+            val temp_val = findViewById<TextView>(R.id.TEMP_CELSIUS_USER).text.toString()
+            val regex = Regex("""\d+""")
+            val matchResult = regex.find(temp_val)
+            val numericValue = matchResult?.value?.toIntOrNull()
+            val intent = Intent(this , ErrorsActivity::class.java)
+            intent.putExtra("temp" , numericValue.toString())
+            startActivity(intent)
         }
 
         // reset_wifi
@@ -163,10 +172,10 @@ class AzureConnectionTest : AppCompatActivity() {
         val numericValue = matchResult?.value?.toIntOrNull()
 
         // Cancel any previously posted runnable
-        sendRequestRunnable?.let { buttonHandler.removeCallbacks(it) }
+        sendRequestupRunnable?.let { buttonupHandler.removeCallbacks(it) }
 
         // Create a new runnable to send the request after a delay
-        sendRequestRunnable = Runnable {
+        sendRequestupRunnable = Runnable {
             var sent_value = numericValue?.plus(numberofUps)!!.toInt()
             if(sent_value>99){
                 sent_value =99
@@ -184,7 +193,7 @@ class AzureConnectionTest : AppCompatActivity() {
         }
 
         // Post the new runnable with a delay of 300 milliseconds (adjust as needed)
-        buttonHandler.postDelayed(sendRequestRunnable!!, 500)
+        buttonupHandler.postDelayed(sendRequestupRunnable!!, 500)
     }
 
     fun onDownButtonClick(view: View) {
@@ -194,12 +203,12 @@ class AzureConnectionTest : AppCompatActivity() {
         val numericValue = matchResult?.value?.toIntOrNull()
        numberofDowns+=1
         // Cancel any previously posted runnable
-        sendRequestRunnable?.let { buttonHandler.removeCallbacks(it) }
+        sendRequestdownRunnable?.let { buttondownHandler.removeCallbacks(it) }
 
         // Create a new runnable to send the request after a delay
-        sendRequestRunnable = Runnable {
+        sendRequestdownRunnable = Runnable {
             var sent_value = numericValue?.minus(numberofDowns)!!.toInt()
-            if(sent_value<0){
+            if(sent_value<=0){
                 sent_value =0
             }
             ApiClient.sendChangeRequest("/down", sent_value.toString()) { response, error ->
@@ -216,7 +225,7 @@ class AzureConnectionTest : AppCompatActivity() {
         }
 
         // Post the new runnable with a delay of 300 milliseconds (adjust as needed)
-        buttonHandler.postDelayed(sendRequestRunnable!!, 500)
+        buttondownHandler.postDelayed(sendRequestdownRunnable!!, 500)
     }
 
     @SuppressLint("SetTextI18n")

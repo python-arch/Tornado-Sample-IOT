@@ -16,7 +16,7 @@ class ErrorsActivity : AppCompatActivity() {
     private val runnable = object : Runnable {
         override fun run() {
             fetchData()
-            handler.postDelayed(this, 1000) // Repeat every 1 second
+            handler.postDelayed(this, 500) // Repeat every 1 second
         }
     }
 
@@ -40,7 +40,7 @@ class ErrorsActivity : AppCompatActivity() {
     private lateinit var wifiErrorTextView: TextView
     private lateinit var roomTempError26_1TextView: TextView
     private lateinit var roomTempError26_2TextView: TextView
-
+    private  lateinit var  temp_val:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_errors)
@@ -66,13 +66,58 @@ class ErrorsActivity : AppCompatActivity() {
         roomTempError26_1TextView = findViewById(R.id.room_temp_error_26_1)
         roomTempError26_2TextView = findViewById(R.id.room_temp_error_26_2)
 
-        // Fetch and display initial display value
-        fetchData()
+//        // Fetch and display initial display value
+//        fetchData()
+//
+//        // repeat the task
+//        handler.post(runnable)
 
-        // repeat the task
+        temp_val = intent.getStringExtra("temp")!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        onActivityOpened()
+        // Start the runnable when the activity starts
         handler.post(runnable)
     }
 
+    override fun onStop() {
+        super.onStop()
+        onActivityClosed()
+        // Stop the runnable when the activity stops
+        handler.removeCallbacks(runnable)
+    }
+
+    private fun onActivityOpened() {
+        // code to execute when the activity is opened
+        ApiClient.sendChangeRequest("/app_open" , temp_val){ response , err->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error sending OPEN State", err)
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
+            }
+        }
+    }
+
+    private fun onActivityClosed() {
+        ApiClient.sendChangeRequest("/app_closed" , temp_val){ response , err->
+            if (err != null) {
+                // Handle error
+                Log.e("AzureConnectionTest", "Error sending CLOSED State", err)
+            }
+
+            if (response!!.isEmpty()) {
+                // Handle empty response
+                Log.e("AzureConnectionTest", "Empty response")
+            }
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     private fun fetchData() {
